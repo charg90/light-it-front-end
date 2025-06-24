@@ -157,7 +157,7 @@ function Footer() {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Join Our Team (Career opportunities, similar to "Careers")
+                  Join Our Team (Career opportunities, similar to Careers)
                 </a>
               </li>
             </ul>

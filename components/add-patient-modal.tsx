@@ -9,11 +9,12 @@ import { FileUpload } from "./ui/file-upload";
 import { usePatientSubmission } from "@/hooks/use-patient-submission";
 import { useEffect, useState } from "react";
 import { ConfirmationModal } from "./confirmation-modal";
+import { Patient } from "@/app/types/patient.types";
 
 interface AddPatientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (patient: any) => void;
+  onSave: (patient: Patient) => void;
 }
 
 export function AddPatientModal({

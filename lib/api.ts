@@ -28,7 +28,7 @@ class ApiClient {
 
   async post<T>(
     endpoint: string,
-    data?: any,
+    data?: unknown | FormData,
     options?: RequestInit
   ): Promise<T> {
     const url = buildApiUrl(endpoint);
@@ -66,7 +66,7 @@ class ApiClient {
 
   async put<T>(
     endpoint: string,
-    data?: any,
+    data?: unknown | FormData,
     options?: RequestInit
   ): Promise<T> {
     const url = buildApiUrl(endpoint);
