@@ -6,6 +6,15 @@ import { Modal } from "./ui/modal";
 import { ModalFooter } from "./ui/modal-footer";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { FileUpload } from "./ui/file-upload";
+import {
+  validateDocumentFile,
+  validateFullName,
+  validateGmailEmail,
+  validatePhoneNumber,
+} from "@/utils/validation";
+import { api } from "@/lib/api";
+import { Patient } from "@/app/types/patient.types";
 
 interface AddPatientModalProps {
   isOpen: boolean;
@@ -22,35 +31,68 @@ export function AddPatientModal({
     fullName: "",
     email: "",
     phoneNumber: "",
-    documentUrl: "",
+    documentFile: null as File | null,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    const nameError = validateFullName(formData.fullName);
+    if (nameError) newErrors.fullName = nameError;
+
+    const emailError = validateGmailEmail(formData.email);
+    if (emailError) newErrors.email = emailError;
+
+    const phoneError = validatePhoneNumber(formData.phoneNumber);
+    if (phoneError) newErrors.phoneNumber = phoneError;
+
+    const fileError = validateDocumentFile(formData.documentFile);
+    if (fileError) newErrors.documentFile = fileError;
+
+    return newErrors;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validación simple
-    const newErrors: Record<string, string> = {};
-    if (!formData.fullName.trim())
-      newErrors.fullName = "El nombre es requerido";
-    if (!formData.email.trim()) newErrors.email = "El email es requerido";
-    if (!formData.phoneNumber.trim())
-      newErrors.phoneNumber = "El teléfono es requerido";
+    const validationErrors = validateForm();
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
-    onSave({
-      id: Date.now().toString(),
-      ...formData,
-    });
+    try {
+      const formPayload = new FormData();
 
-    setFormData({ fullName: "", email: "", phoneNumber: "", documentUrl: "" });
-    setErrors({});
-    onClose();
+      formPayload.append("fullName", formData.fullName);
+      formPayload.append("email", formData.email);
+      formPayload.append("phoneNumber", formData.phoneNumber);
+
+      if (formData.documentFile) {
+        formPayload.append("documentFile", formData.documentFile);
+      }
+
+      const response = await api.post<{ patient: Patient }>(
+        "/patients",
+        formPayload
+      );
+
+      onSave(response.patient);
+
+      setFormData({
+        fullName: "",
+        email: "",
+        phoneNumber: "",
+        documentFile: null,
+      });
+      setErrors({});
+      onClose();
+    } catch (error) {
+      console.error("Error saving patient:", error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,11 +102,24 @@ export function AddPatientModal({
       [name]: value,
     }));
 
-    // Limpiar error cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
+      }));
+    }
+  };
+
+  const handleFileSelect = (file: File | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      documentFile: file,
+    }));
+
+    if (errors.documentFile) {
+      setErrors((prev) => ({
+        ...prev,
+        documentFile: "",
       }));
     }
   };
@@ -105,13 +160,11 @@ export function AddPatientModal({
             error={errors.phoneNumber}
           />
 
-          <Input
-            label="Document URL"
-            name="documentUrl"
-            type="url"
-            value={formData.documentUrl}
-            onChange={handleChange}
-            placeholder="E.g. https://example.com/document.pdf"
+          <FileUpload
+            onFileSelect={handleFileSelect}
+            accept=".jpg,.jpeg"
+            maxSize={5}
+            error={errors.documentFile}
           />
         </div>
 

@@ -2,16 +2,9 @@
 
 import { useState } from "react";
 import { Card } from "./ui/card";
-import { Button } from "./ui/button";
-import {
-  ChevronDown,
-  ChevronUp,
-  Mail,
-  Phone,
-  FileText,
-  Edit,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Mail, Phone } from "lucide-react";
 import type { Patient } from "@/app/types/patient.types";
+import Image from "next/image";
 
 interface PatientCardProps {
   patient: Patient;
@@ -42,13 +35,15 @@ export function PatientCard({
       <div onClick={toggleExpanded} className="select-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4 flex-1">
-            {/* Document Photo/Preview */}
             <div className="relative">
-              <div className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md bg-[#5d29fa]">
-                <FileText size={24} />
-              </div>
               {patient.documentUrl && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                <Image
+                  src={patient.documentUrl}
+                  alt={`Document ${patient.fullName}`}
+                  className="w-16 h-16 rounded-lg shadow-md object-cover"
+                  width={64}
+                  height={64}
+                />
               )}
             </div>
 
@@ -75,19 +70,17 @@ export function PatientCard({
       </div>
 
       <div
-        className={`transition-all duration-300 ease-in-out ${
-          isExpanded
-            ? "max-h-96 opacity-100 mt-6"
-            : "max-h-0 opacity-0 overflow-hidden"
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isExpanded ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
         }`}
       >
         <div className="border-t border-gray-200 mb-4"></div>
 
-        <div className="space-y-4 mb-6">
+        <div className="space-y-4 mb-6 px-2 max-h-80 overflow-y-auto">
           <h4 className="text-sm font-medium text-gray-700">
             Contact Information
           </h4>
-          <p className="text-sm text-gray-500">Id: {patient.id}</p>
+
           <div className="space-y-3">
             <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
               <Mail size={16} className="mr-3 flex-shrink-0 text-gray-400" />

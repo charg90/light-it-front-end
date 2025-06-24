@@ -36,7 +36,7 @@ function ClienteDashboard({ initialPatients }: Props) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
         {patients.map((patient) => (
           <PatientCard key={patient.id} patient={patient} />
         ))}

@@ -33,13 +33,18 @@ class ApiClient {
   ): Promise<T> {
     const url = buildApiUrl(endpoint);
 
+    const isFormData = data instanceof FormData;
+
+    const headers = new Headers(options?.headers);
+
+    if (!isFormData) {
+      headers.set("Content-Type", "application/json");
+    }
+
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
-      body: data ? JSON.stringify(data) : undefined,
+      headers,
+      body: data ? (isFormData ? data : JSON.stringify(data)) : undefined,
       ...options,
     });
 
