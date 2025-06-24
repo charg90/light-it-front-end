@@ -33,23 +33,32 @@ class ApiClient {
   ): Promise<T> {
     const url = buildApiUrl(endpoint);
 
-    const isFormData = data instanceof FormData;
-
-    const headers = new Headers(options?.headers);
-
-    if (!isFormData) {
-      headers.set("Content-Type", "application/json");
-    }
-
     const response = await fetch(url, {
       method: "POST",
-      headers,
-      body: data ? (isFormData ? data : JSON.stringify(data)) : undefined,
+      headers: {
+        ...options?.headers,
+
+        ...(data instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
+      },
+      body: data instanceof FormData ? data : JSON.stringify(data),
       ...options,
     });
 
     if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
+      let message = `Error ${response.status}: ${response.statusText}`;
+
+      try {
+        const errorBody = await response.json();
+        if (errorBody?.message) {
+          message = errorBody.message;
+        }
+      } catch {
+        message = `Please try again later.`;
+      }
+
+      throw new Error(message);
     }
 
     return response.json();

@@ -59,3 +59,16 @@ export const validateDocumentFile = (file: File | null): string | null => {
 
   return null;
 };
+
+export const validateAreaCode = (areaCode: string): string | null => {
+  if (!areaCode.trim()) {
+    return "Area code is required";
+  }
+
+  const areaCodeRegex = /^\+\d{1,3}$/;
+  if (!areaCodeRegex.test(areaCode.trim())) {
+    return "Area code must start with '+' followed by 1-3 digits";
+  }
+
+  return null;
+};

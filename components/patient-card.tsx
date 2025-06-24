@@ -8,17 +8,9 @@ import Image from "next/image";
 
 interface PatientCardProps {
   patient: Patient;
-  onEdit?: (patientId: string) => void;
-  onViewDocument?: (documentUrl: string) => void;
-  onRemove?: (patientId: string) => void;
 }
 
-export function PatientCard({
-  patient,
-  onEdit,
-  onViewDocument,
-  onRemove,
-}: PatientCardProps) {
+export function PatientCard({ patient }: PatientCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpanded = () => {
@@ -28,9 +20,8 @@ export function PatientCard({
   return (
     <Card
       variant="white"
-      className="hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden"
+      className="relative hover:shadow-lg transition-all duration-300 cursor-pointer overflow-visible"
       closable
-      onClose={() => onRemove?.(patient.id)}
     >
       <div onClick={toggleExpanded} className="select-none">
         <div className="flex items-center justify-between">
@@ -69,41 +60,41 @@ export function PatientCard({
         </div>
       </div>
 
-      <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="border-t border-gray-200 mb-4"></div>
+      {isExpanded && (
+        <div
+          className={`absolute left-0 right-0 top-full z-10 bg-white border border-gray-200 rounded-b-lg shadow-xl p-4 transition-opacity duration-300 ${
+            isExpanded ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="space-y-4 px-2 max-h-80 overflow-y-auto">
+            <h4 className="text-sm font-medium text-gray-700">
+              Contact Information
+            </h4>
 
-        <div className="space-y-4 mb-6 px-2 max-h-80 overflow-y-auto">
-          <h4 className="text-sm font-medium text-gray-700">
-            Contact Information
-          </h4>
-
-          <div className="space-y-3">
-            <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
-              <Mail size={16} className="mr-3 flex-shrink-0 text-gray-400" />
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">
-                  Email
-                </p>
-                <p className="text-sm font-medium">{patient.email}</p>
+            <div className="space-y-3">
+              <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
+                <Mail size={16} className="mr-3 flex-shrink-0 text-gray-400" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    Email
+                  </p>
+                  <p className="text-sm font-medium">{patient.email}</p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
-              <Phone size={16} className="mr-3 flex-shrink-0 text-gray-400" />
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">
-                  Phone Number
-                </p>
-                <p className="text-sm font-medium">{patient.phoneNumber}</p>
+              <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
+                <Phone size={16} className="mr-3 flex-shrink-0 text-gray-400" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    Phone Number
+                  </p>
+                  <p className="text-sm font-medium">{patient.phoneNumber}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 }

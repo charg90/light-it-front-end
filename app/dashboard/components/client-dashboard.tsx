@@ -21,7 +21,7 @@ function ClienteDashboard({ initialPatients }: Props) {
     setPatients((prev) => [...prev, newPatient]);
   };
   return (
-    <div className="min-h-[calc(100vh-160px)] p-6">
+    <div className="min-h-[calc(100vh-100px)] p-6">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-white">
           Patients ({patients.length})
