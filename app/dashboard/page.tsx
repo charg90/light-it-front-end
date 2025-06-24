@@ -9,7 +9,7 @@ async function dashboard() {
 
   return (
     <Suspense fallback={<DashboardLoading />}>
-      <ClienteDashboard patients={patients} />;
+      <ClienteDashboard initialPatients={patients} />;
     </Suspense>
   );
 }

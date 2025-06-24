@@ -18,7 +18,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         "text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200",
       secondary:
-        "bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 border border-gray-300",
+        "bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200",
     };
 
     const variantStyles = {

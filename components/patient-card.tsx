@@ -56,7 +56,6 @@ export function PatientCard({
               <h3 className="font-semibold text-gray-900 text-lg truncate">
                 {patient.fullName}
               </h3>
-              <p className="text-sm text-gray-500">ID: {patient.id}</p>
             </div>
           </div>
 
@@ -88,7 +87,7 @@ export function PatientCard({
           <h4 className="text-sm font-medium text-gray-700">
             Contact Information
           </h4>
-
+          <p className="text-sm text-gray-500">Id: {patient.id}</p>
           <div className="space-y-3">
             <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
               <Mail size={16} className="mr-3 flex-shrink-0 text-gray-400" />

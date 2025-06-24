@@ -1,13 +1,25 @@
+"use client";
 import { Patient } from "@/app/types/patient.types";
+import { AddPatientModal } from "@/components/add-patient-modal";
 import { PatientCard } from "@/components/patient-card";
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
-  patients: Patient[];
+  initialPatients: Patient[];
 };
 
-function ClienteDashboard({ patients }: Props) {
+function ClienteDashboard({ initialPatients }: Props) {
+  const [patients, setPatients] = useState(initialPatients);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddPatient = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSavePatient = (newPatient: Patient) => {
+    setPatients((prev) => [...prev, newPatient]);
+  };
   return (
     <div className="min-h-[calc(100vh-160px)] p-6">
       <div className="flex items-center justify-between mb-8">
@@ -16,9 +28,8 @@ function ClienteDashboard({ patients }: Props) {
         </h1>
 
         <button
-          // onClick={handleAddPatient}
-          className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-          style={{ backgroundColor: "#7345fc" }}
+          onClick={handleAddPatient}
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 bg-[#7345fc]"
           aria-label="Agregar paciente"
         >
           <Plus size={24} />
@@ -30,6 +41,12 @@ function ClienteDashboard({ patients }: Props) {
           <PatientCard key={patient.id} patient={patient} />
         ))}
       </div>
+
+      <AddPatientModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSavePatient}
+      />
     </div>
   );
 }
