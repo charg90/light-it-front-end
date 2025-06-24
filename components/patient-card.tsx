@@ -21,7 +21,6 @@ export function PatientCard({ patient }: PatientCardProps) {
     <Card
       variant="white"
       className="relative hover:shadow-lg transition-all duration-300 cursor-pointer overflow-visible"
-      closable
     >
       <div onClick={toggleExpanded} className="select-none">
         <div className="flex items-center justify-between">
