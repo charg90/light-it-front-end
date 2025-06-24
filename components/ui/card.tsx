@@ -18,8 +18,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       size = "md",
       children,
       style,
-      closable = false,
-      onClose,
+
       ...props
     },
     ref

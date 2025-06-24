@@ -7,8 +7,7 @@ import { Upload, X, FileImage, AlertCircle } from "lucide-react";
 interface FileUploadProps {
   onFileSelect: (file: File | null) => void;
   accept?: string;
-  maxSize?: number; // en MB
-  required?: boolean;
+  maxSize?: number;
   error?: string;
   className?: string;
 }
@@ -17,7 +16,6 @@ export function FileUpload({
   onFileSelect,
   accept = ".jpg,.jpeg",
   maxSize = 5,
-  required = false,
   error,
   className = "",
 }: FileUploadProps) {
