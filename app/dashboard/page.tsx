@@ -1,7 +1,17 @@
-import React from "react";
+import { getPatients } from "@/lib/get-patients";
+import React, { Suspense } from "react";
+import ClienteDashboard from "./components/client-dashboard";
 
-function page() {
-  return <div>page</div>;
+import DashboardLoading from "./loading";
+
+async function dashboard() {
+  const patients = await getPatients();
+
+  return (
+    <Suspense fallback={<DashboardLoading />}>
+      <ClienteDashboard initialPatients={patients} />;
+    </Suspense>
+  );
 }
 
-export default page;
+export default dashboard;
