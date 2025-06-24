@@ -1,0 +1,117 @@
+"use client";
+
+import { useState } from "react";
+import { Card } from "./ui/card";
+import { Button } from "./ui/button";
+import {
+  ChevronDown,
+  ChevronUp,
+  Mail,
+  Phone,
+  FileText,
+  Edit,
+} from "lucide-react";
+import type { Patient } from "@/app/types/patient.types";
+
+interface PatientCardProps {
+  patient: Patient;
+  onEdit?: (patientId: string) => void;
+  onViewDocument?: (documentUrl: string) => void;
+  onRemove?: (patientId: string) => void;
+}
+
+export function PatientCard({
+  patient,
+  onEdit,
+  onViewDocument,
+  onRemove,
+}: PatientCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <Card
+      variant="white"
+      className="hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden"
+      closable
+      onClose={() => onRemove?.(patient.id)}
+    >
+      <div onClick={toggleExpanded} className="select-none">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4 flex-1">
+            {/* Document Photo/Preview */}
+            <div className="relative">
+              <div className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md bg-[#5d29fa]">
+                <FileText size={24} />
+              </div>
+              {patient.documentUrl && (
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-gray-900 text-lg truncate">
+                {patient.fullName}
+              </h3>
+              <p className="text-sm text-gray-500">ID: {patient.id}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleExpanded();
+              }}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label={isExpanded ? "Contraer" : "Expandir"}
+            >
+              {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          isExpanded
+            ? "max-h-96 opacity-100 mt-6"
+            : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
+        <div className="border-t border-gray-200 mb-4"></div>
+
+        <div className="space-y-4 mb-6">
+          <h4 className="text-sm font-medium text-gray-700">
+            Contact Information
+          </h4>
+
+          <div className="space-y-3">
+            <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
+              <Mail size={16} className="mr-3 flex-shrink-0 text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide">
+                  Email
+                </p>
+                <p className="text-sm font-medium">{patient.email}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
+              <Phone size={16} className="mr-3 flex-shrink-0 text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide">
+                  Phone Number
+                </p>
+                <p className="text-sm font-medium">{patient.phoneNumber}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+}
