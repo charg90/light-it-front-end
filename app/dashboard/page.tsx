@@ -1,7 +1,10 @@
+import { getPatients } from "@/lib/get-patients";
 import React from "react";
 
-function page() {
+async function dashboard() {
+  const patients = await getPatients();
+  console.log(patients);
   return <div>page</div>;
 }
 
-export default page;
+export default dashboard;
