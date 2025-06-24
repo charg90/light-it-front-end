@@ -27,13 +27,16 @@ function ClienteDashboard({ initialPatients }: Props) {
           Patients ({patients.length})
         </h1>
 
-        <button
-          onClick={handleAddPatient}
-          className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 bg-[#7345fc]"
-          aria-label="Agregar paciente"
-        >
-          <Plus size={24} />
-        </button>
+        <div className="flex items-center space-x-4">
+          <span className="text-white text-xl font-medium">Add Patient</span>{" "}
+          <button
+            onClick={handleAddPatient}
+            className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 bg-[#7345fc]"
+            aria-label="Agregar paciente"
+          >
+            <Plus size={24} />
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
