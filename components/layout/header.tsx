@@ -16,9 +16,9 @@ function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center">
+          <Link href="/dashboard" className="cursor-pointer">
             <Button>Dashboard</Button>
-          </div>
+          </Link>
         </div>
       </div>
     </header>

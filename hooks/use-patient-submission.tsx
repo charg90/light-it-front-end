@@ -118,7 +118,7 @@ export function usePatientSubmission(
       formPayload.append("email", formData.email);
       formPayload.append(
         "phoneNumber",
-        formData.areaCode + formData.phoneNumber
+        formData.areaCode + formData.phoneNumber.trim()
       );
 
       if (formData.documentFile) {
