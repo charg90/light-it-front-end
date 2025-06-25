@@ -18,7 +18,7 @@ export default function Home() {
         healthcare solutions for everyone.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 items-center">
+      <div className="flex flex-col sm:flex-row gap-4 items-center cursor-pointer">
         <Link href="/dashboard">
           <Button size="lg">Go to Dashboard</Button>
         </Link>

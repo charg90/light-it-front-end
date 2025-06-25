@@ -184,7 +184,7 @@ export function FileUpload({
       </div>
 
       {displayError && (
-        <div className="flex items-center mt-2 text-red-400 text-sm">
+        <div className="flex items-center mt-2 text-red-400 animate-bounce text-sm">
           <AlertCircle size={16} className="mr-2" />
           {displayError}
         </div>
