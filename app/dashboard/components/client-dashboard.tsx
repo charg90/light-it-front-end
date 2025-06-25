@@ -20,6 +20,7 @@ function ClienteDashboard({ initialPatients }: Props) {
   const handleSavePatient = (newPatient: Patient) => {
     setPatients((prev) => [...prev, newPatient]);
   };
+
   return (
     <div className="min-h-[calc(100vh-100px)] p-6">
       <div className="flex items-center justify-between mb-8">
@@ -39,11 +40,17 @@ function ClienteDashboard({ initialPatients }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-        {patients.map((patient) => (
-          <PatientCard key={patient.id} patient={patient} />
-        ))}
-      </div>
+      {patients.length === 0 ? (
+        <div className="text-center text-white text-lg flex items-center justify-center mt-64">
+          No patients. Please add a new patient.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+          {patients.map((patient) => (
+            <PatientCard key={patient.id} patient={patient} />
+          ))}
+        </div>
+      )}
 
       <AddPatientModal
         isOpen={isModalOpen}
