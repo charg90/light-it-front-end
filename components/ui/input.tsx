@@ -65,7 +65,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {required && "*"}
         </label>
 
-        {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+        {error && (
+          <p className="mt-1 text-sm text-red-400 animate-bounce" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
